@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: '选择操作（默认部署）'
+        description: 'Action (deploy by default)'
         required: false
         default: 'deploy'
         type: choice
@@ -17,10 +17,10 @@ jobs:
   deploy:
     runs-on: windows-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
@@ -33,11 +33,11 @@ jobs:
       - name: Build or Deploy
         shell: powershell
         run: |
-          [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-          if ("${{ github.event.inputs.environment }}" -eq "build-only") {
+          # 极简模式：移除所有非必需字符
+          if (${{ github.event.inputs.environment }} -eq "build-only") {
             mkdocs build
-            Write-Output "构建完成"
+            echo "Build success"
           } else {
             mkdocs gh-deploy --force
-            Write-Output "已部署到 GitHub Pages"
+            echo "Deploy success"
           }
