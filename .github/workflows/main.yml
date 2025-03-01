@@ -33,7 +33,7 @@ jobs:
       - name: Build or Deploy
         shell: powershell
         run: |
-          $env:PYTHONIOENCODING = "utf-8"
+          [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
           if ("${{ github.event.inputs.environment }}" -eq "build-only") {
             mkdocs build
             Write-Output "构建完成"
