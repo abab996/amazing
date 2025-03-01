@@ -1,11 +1,19 @@
 name: Deploy
+on:
+  push:
+    branches: [ "main" ]    # 只有 main 分支的推送会触发
+    paths:                  # 可选：仅特定文件变更时触发
+      - 'docs/**'           # docs 目录下的文件变更
+      - 'mkdocs.yml'        # 配置文件变更
+  schedule:                 # 可选：定时任务（UTC 时间）
+    - cron: '0 0 * * *'     # 每天 00:00 运行
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: 3.13
-      - run: pip install mkdocs mkdocs-material
+          python-version: "3.x"
+      - run: pip install mkdocs
       - run: mkdocs gh-deploy --force
