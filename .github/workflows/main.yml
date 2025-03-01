@@ -33,11 +33,11 @@ jobs:
       - name: Build or Deploy
         shell: powershell
         run: |
-          # 极简模式：移除所有非必需字符
-          if (${{ github.event.inputs.environment }} -eq "build-only") {
+          $inputEnv = "${{ github.event.inputs.environment }}"
+          if ($inputEnv -eq "build-only") {
             mkdocs build
-            echo "Build success"
+            Write-Output "Build success"
           } else {
             mkdocs gh-deploy --force
-            echo "Deploy success"
+            Write-Output "Deploy success"
           }
