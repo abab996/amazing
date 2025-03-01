@@ -31,8 +31,9 @@ jobs:
           pip install mkdocs mkdocs-material
 
       - name: Build or Deploy
-        shell: powershell  # 使用 PowerShell
+        shell: powershell
         run: |
+          $env:PYTHONIOENCODING = "utf-8"
           if ("${{ github.event.inputs.environment }}" -eq "build-only") {
             mkdocs build
             Write-Output "构建完成"
